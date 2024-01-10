@@ -7,6 +7,7 @@ from ml.model import compute_model_metrics
 from sklearn import tree
 import pandas as pd
 import os
+import pickle
 
 # Add the necessary imports for the starter code.
 
@@ -48,11 +49,17 @@ X_test, y_test, encoder, lb = process_data(
 )
 
 
-# Train and save a model.
+# Train model.
 model = train_model(X_train, y_train)
+
+# Save Model, encoder + lb
+pickle.dump(model, open('../model/model.pkl', 'wb'))
+pickle.dump(encoder, open('../model/encoder.pkl', 'wb'))
+pickle.dump(lb, open('../model/lb.pkl', 'wb'))
 
 # Calculate Model-Metrics
 preds = model.predict(X_test)
 precision, recall, fbeta = compute_model_metrics(y_test,preds)
 print(precision)
-
+print(recall)
+print(fbeta)
