@@ -32,5 +32,5 @@ def test_column_names(data):
 
 def test_classifier():
     """ If your model is an instance of DeciontreeCLassifier then this is a valid test. """
-    model = pickle.load(open("./model/model.pkl",'rb'))
+    model = pickle.load(open("model/model.pkl",'rb'))
     assert isinstance(model, tree.DecisionTreeClassifier) 
