@@ -49,6 +49,7 @@ X_test, y_test, encoder, lb = process_data(
 )
 
 
+
 # Train model.
 model = train_model(X_train, y_train)
 
@@ -63,3 +64,19 @@ precision, recall, fbeta = compute_model_metrics(y_test,preds)
 print(precision)
 print(recall)
 print(fbeta)
+
+# Calculate Model-Metrics Slicing
+for feature in cat_features:
+    # Value per feature
+    for cls in data[feature].unique():
+        data_sclice = data[data[feature] == cls]
+        X_slice, y_sclice, encoder, lb = process_data(
+        data_sclice, categorical_features=cat_features, label="salary", training=False, encoder=encoder, lb=lb
+        )        
+        preds_sclice = model.predict(X_slice)
+        precision, recall, fbeta = compute_model_metrics(y_sclice,preds_sclice)
+        print(f"feature: {feature} value: {cls}   precision: {precision}")
+      
+
+
+
