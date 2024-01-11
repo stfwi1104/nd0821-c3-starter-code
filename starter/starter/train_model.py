@@ -75,7 +75,7 @@ for feature in cat_features:
         )        
         preds_sclice = model.predict(X_slice)
         precision, recall, fbeta = compute_model_metrics(y_sclice,preds_sclice)
-        print(f"feature: {feature} value: {cls}   precision: {precision}")
+        print(f"feature: {feature} value: {cls} precision: {precision}")
       
 
 
