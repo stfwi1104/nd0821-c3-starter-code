@@ -60,7 +60,7 @@ async def prediciton(data : Inputfeatures):
     df = pd.DataFrame(data.dict(by_alias=True),  index=[0])
     print(df)
  
-    #X = process_data(df,cat_features,label=None,training=False,encoder=encoder,lb=lb)
-    #print(X)
-    #pred = inference(model,X)
+    X = process_data(df,cat_features,label=None,training=False,encoder=encoder,lb=lb)
+    print(X[0])
+    pred = inference(model,X[0])
     return data
