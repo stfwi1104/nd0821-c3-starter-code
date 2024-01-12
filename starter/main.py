@@ -1,6 +1,6 @@
 # Put the code for your API here.
 from fastapi import FastAPI
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from starter.ml.data import process_data
 from starter.ml.model import inference 
 import pickle
@@ -28,20 +28,21 @@ cat_features = [
 
 # Declare the data object with its components and their type.
 class Inputfeatures(BaseModel):
-    age: int
-    workclass: str
-    fnlgt: int
-    education: str
-    education_num: int
-    marital_status: str
-    occupation: str
-    relationship: str
-    race: str
-    sex: str
-    capital_gain: int
-    capital_loss: int
-    hours_per_week: int
-    native_country:  str
+    age: int = Field(..., example=25)
+    workclass: str = Field(..., example="Private")
+    fnlgt: int = Field(..., example=77516)
+    education: str = Field(..., example="Masters")
+    education_num: int = Field(..., alias="education-num", example=13)
+    marital_status: str = Field(..., alias="marital-status",example="Divorced")
+    occupation: str = Field(..., example="Adm-clerical")
+    relationship: str = Field(..., example="Husband")
+    race: str = Field(..., example="White")
+    sex: str = Field(..., example="Male")
+    capital_gain: int = Field(..., alias="capital-gain", example=10)
+    capital_loss: int = Field(..., alias="capital-loss", example=10)
+    hours_per_week: int = Field(..., alias="hours-per-week", example=34)
+    native_country: str = Field(...,alias="native-country", example="Germany")
+   
 
 
 @app.get("/")
@@ -55,14 +56,11 @@ async def prediciton(data : Inputfeatures):
     model = pickle.load(open("model/model.pkl",'rb'))   
     encoder = pickle.load(open("model/encoder.pkl",'rb')) 
     lb = pickle.load(open("model/lb.pkl",'rb'))  
-    
-    #df = json.loads(data)
-    #df = pd.DataFrame.from_dict(data)
-    df = pd.DataFrame(data.dict(), index=[0])
-    #print(df)
-    #data = pd.read_json(data)
-    X = process_data(df,cat_features,label=None,training=False,encoder=encoder,lb=lb)
-   # pred = inference(model,data)
-
+  
+    df = pd.DataFrame(data.dict(by_alias=True),  index=[0])
     print(df)
+ 
+    #X = process_data(df,cat_features,label=None,training=False,encoder=encoder,lb=lb)
+    #print(X)
+    #pred = inference(model,X)
     return data
