@@ -41,13 +41,18 @@ def test_api_locally_get_root():
     response = client.get("/")
     assert response.status_code == 200
 
+# test content on root
+def test_api_locally_get_root():
+    response = client.get("/")
+    assert response.json() is not None
+
 # test statuscode on inference
 def test_api_inference():
     response = client.post('/prediciton/', data=json.dumps(featureinput))
     assert response.status_code == 200
 
-# test predicitonfields on inference
-def test_api_inference():
+# test prediction on inference 
+def test_api_inference_prediction():
     response = client.post('/prediciton/', data=json.dumps(featureinput))
-    assert (response.json() == {'Predcition': '<50k'}) | (response.json() == {'Predcition': '>50k'}) 
+    assert (response.json()["Prediction"] == '<50k') | (response.json() == (response.json()["Prediction"] == '>50k')) 
 

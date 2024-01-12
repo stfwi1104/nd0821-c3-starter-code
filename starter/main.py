@@ -49,7 +49,7 @@ class Inputfeatures(BaseModel):
 async def say_hello():
     return {"Welcome to the Project Application"}
 
-# This allows sending of data (our TaggedItem) via POST to the API.
+# This allows sending of data via POST to the API.
 @app.post("/prediciton/")
 async def prediciton(data : Inputfeatures):
 
@@ -58,7 +58,7 @@ async def prediciton(data : Inputfeatures):
     encoder = pickle.load(open("model/encoder.pkl",'rb')) 
     lb = pickle.load(open("model/lb.pkl",'rb'))  
   
-    # Transform Data Dict to Dataframe and use defined alias from class Inputfeatures as columns  
+    # Transform Input (Data Dict) to Dataframe and use defined alias from class Inputfeatures as columns  
     df = pd.DataFrame(data.dict(by_alias=True),  index=[0])
     print(df)
  
@@ -75,4 +75,4 @@ async def prediciton(data : Inputfeatures):
         pred = ">50k"
 
     # Reply 
-    return {f"Predcition": pred}
+    return {f"Prediction": pred}
