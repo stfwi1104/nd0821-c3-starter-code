@@ -25,7 +25,7 @@ featureinput =  { 'age':20,
             'native-country':"United-States"
             }
 
-
+'''
 response1 = client.get("/")
 print(response1.status_code)
 print(response1.json())
@@ -34,23 +34,20 @@ print(response1.json())
 response2 = client.post('/prediciton/', data=json.dumps(featureinput))
 print(response2.status_code)
 print(response2.json())
+'''
 
-#def test_api_locally_get_root():
- #   response1 = client.get("/")
-  #  print(response1.status_code)
-   # print(response1.json())
-    
-    
-    #assert r.status_code == 200
+# test statuscode on root
+def test_api_locally_get_root():
+    response = client.get("/")
+    assert response.status_code == 200
 
+# test statuscode on inference
+def test_api_inference():
+    response = client.post('/prediciton/', data=json.dumps(featureinput))
+    assert response.status_code == 200
 
+# test predicitonfields on inference
+def test_api_inference():
+    response = client.post('/prediciton/', data=json.dumps(featureinput))
+    assert (response.json() == {'Predcition': '<50k'}) | (response.json() == {'Predcition': '>50k'}) 
 
-
-
-#response1 = requests.get('http://127.0.0.1:8000/')
-#response2 = requests.post('http://127.0.0.1:8000/prediciton/', data=json.dumps(featureinput))
-
-#print(response1.status_code)
-#print(response1.json())
-#print(response2.status_code)
-#print(response2.json())

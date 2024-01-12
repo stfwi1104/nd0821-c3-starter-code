@@ -44,7 +44,7 @@ class Inputfeatures(BaseModel):
     native_country: str = Field(...,alias="native-country", example="Germany")
    
 
-
+# Define a GET on the specified endpoint.
 @app.get("/")
 async def say_hello():
     return {"Welcome to the Project Application"}
@@ -53,14 +53,26 @@ async def say_hello():
 @app.post("/prediciton/")
 async def prediciton(data : Inputfeatures):
 
+    # load model, encoder and binarizer
     model = pickle.load(open("model/model.pkl",'rb'))   
     encoder = pickle.load(open("model/encoder.pkl",'rb')) 
     lb = pickle.load(open("model/lb.pkl",'rb'))  
   
+    # Transform Data Dict to Dataframe and use defined alias from class Inputfeatures as columns  
     df = pd.DataFrame(data.dict(by_alias=True),  index=[0])
     print(df)
  
+    # Preprocess data
     X = process_data(df,cat_features,label=None,training=False,encoder=encoder,lb=lb)
-    print(X[0])
+
+    # Predict data
     pred = inference(model,X[0])
-    return data
+
+    # Transformn precition data in readable Information
+    if pred[0] == 0:
+        pred = "<50k"
+    elif pred[0] == 1:
+        pred = ">50k"
+
+    # Reply 
+    return {f"Predcition": pred}
